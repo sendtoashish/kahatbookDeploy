@@ -17,7 +17,7 @@ pipeline{
        steps{
           sh '''
           cd ${TERRAFORM_PATH}
-          terraform plan -var-file = test.tfvars
+          terraform plan -var-file=test.tfvars
           '''
        }
      }
