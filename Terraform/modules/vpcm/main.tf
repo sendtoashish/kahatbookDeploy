@@ -10,7 +10,7 @@ resource "google_compute_network" "vpc_network" {
   mtu                     = 1460
 }
 
-resource "google_compute_subnetwork" "network-secondary-ip-ranges" {
+resource "google_compute_subnetwork" "subnet" {
   name          = var.sub-name
   ip_cidr_range = "10.0.0.0/24"
   region        = var.region
