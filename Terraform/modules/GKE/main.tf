@@ -3,7 +3,6 @@ resource "google_container_cluster" "cluster" {
   project                     = var.project_name
   location                    = var.location
   network                     = var.network
-  private_cluster             = false
   subnetwork                  = var.subnetwork
   min_master_version          = var.release_channel == null ? local.kubernetes_version : null
   remove_default_node_pool    = false
