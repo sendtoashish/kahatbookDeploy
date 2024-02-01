@@ -12,12 +12,18 @@ pipeline{
      }
      stage("Terraform Plan"){
        steps{
-          sh 'terraform plan'
+          sh '''
+          cd /var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster
+          terraform plan
+          '''
        }
      }
      stage("Terraform apply"){
        steps{
-         sh 'terraform apply'
+         sh '''
+         cd /var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster
+         terraform apply
+         '''
        }
      }
    }
