@@ -15,9 +15,7 @@ variable "vpc_name"{
 variable "sub-name"{
   type =  string
 }
-variable "public_subnetwork"{
-  type = string
-}
+
 variable "location" {
   description = "The location (region or zone) of the GKE cluster. If you specify a zone your cluster will be zonal."
   type        = string

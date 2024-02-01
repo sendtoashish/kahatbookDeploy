@@ -10,7 +10,6 @@ module "vpc"{
   source = "../modules/vpcm"
   project-name = var.project_name
   name = var.vpc_name
-  sub-name = var.sub-name
 }
 
 module "gke_cluster"{
