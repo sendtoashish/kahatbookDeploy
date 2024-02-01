@@ -3,14 +3,14 @@ variable "project-name"{
 }
 variable "name"{
   type = string
-  default = gke-vpc
+  default = "gke-vpc"
 }
 variable "sub-name"{
   type = string
-  default = gke_subnet
+  default = "gke_subnet"
 }
 variable "region"{
   type = string
-  default = us-central-1
+  default = "us-central-1"
 }
 
