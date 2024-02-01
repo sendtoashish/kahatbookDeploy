@@ -5,7 +5,7 @@ pipeline{
      stage("Initializing terraform"){
        steps{
           sh '''
-          terraform -chdir=/var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster apply
+          cd /var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster
           terraform init
           '''
        }
