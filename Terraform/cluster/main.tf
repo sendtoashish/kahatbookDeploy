@@ -24,11 +24,7 @@ module "gke_cluster"{
   release_channel                          = var.release_channel
   subnetwork                               = module.vpc.subnetwork_name
   enable_shielded_nodes                    = true
-  disable_public_endpoint                  = false
   enable_intranode_visibility              = true
-  workload_identity_config                 = true
-  config_connector                         = true
-  gce_persistent_disk_csi_driver_config    = true
 
 
 }
