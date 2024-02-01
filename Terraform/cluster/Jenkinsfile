@@ -4,7 +4,10 @@ pipeline{
 
      stage("Initializing terraform"){
        steps{
-          sh 'terraform init ~/workspace/deploymentPipeline/Terraform/cluster'
+          sh '''
+          cd /var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster
+          terraform init
+          '''
        }
      }
      stage("Terraform Plan"){
