@@ -7,10 +7,10 @@ variable "name"{
 }
 variable "sub-name"{
   type = string
-  default = "gke_subnet"
+  default = "gkesubnet"
 }
 variable "region"{
   type = string
-  default = "us-central-1"
+  default = "us-central1"
 }
 
