@@ -25,7 +25,7 @@ pipeline{
        steps{
          sh '''
           cd ${TERRAFORM_PATH}
-         terraform apply
+         terraform apply -var-file=test.tfvars
          '''
        }
      }
