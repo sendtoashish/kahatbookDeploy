@@ -1,0 +1,6 @@
+project_name = "pushfuntoo123"
+vpc_name = "gke-vpc"
+sub-name = "gke-subnet"
+cluster_name = "katabook-cluster"
+location = "us-central-1"
+release_channel = "RAPID"
