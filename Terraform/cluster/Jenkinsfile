@@ -1,9 +1,10 @@
 pipeline{
    agent any
    stages{
+
      stage("Initializing terraform"){
        steps{
-          sh 'terraform init'
+          sh 'terraform init ~/workspace/deploymentPipeline/Terraform/cluster'
        }
      }
      stage("Terraform Plan"){
@@ -17,6 +18,4 @@ pipeline{
        }
      }
    }
-
-
 }
