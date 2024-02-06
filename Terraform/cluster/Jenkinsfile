@@ -55,6 +55,7 @@ pipeline{
             def startTime = currentBuild.startTimeInMillis
             timeout(time: timeout, unit: 'SECONDS') {
                 while (!clusterReady) {
+                  sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME}"
                   def clusterStatus = sh(script: 'kubectl get nodes --no-headers', returnStatus: true).trim()
                   if (clusterStatus == 0) {
                          echo 'GKE Cluster is ready!'
@@ -74,7 +75,7 @@ pipeline{
                      script {
                        def argocdVersion = "latest"
                        def argocdNamespace = "argocd"
-                           sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME} "
+                           sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME}"
                        def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace} --ignore-not-found", returnStatus: true) == 0
                        if(!namespaceExists){
                            sh "kubectl create namespace argocd"
