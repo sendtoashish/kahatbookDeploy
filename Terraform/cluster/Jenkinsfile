@@ -5,8 +5,6 @@ pipeline{
       PROJECT_NAME=''
       GKE_CLUSTER_NAME=''
       GKE_REGION = "us-central1"
-
-
    }
    stages{
      stage{
@@ -67,7 +65,7 @@ pipeline{
           }
        }
      }
-   }
+
      stage("Installing ArgoCd to Gke cluster"){
               steps {
                        script {
@@ -90,4 +88,3 @@ pipeline{
               }
      }
    }
-}
