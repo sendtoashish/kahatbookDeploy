@@ -3,7 +3,7 @@ pipeline{
    environment{
       TERRAFORM_PATH = "/var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster"
       GKE_PROJECT_NAME=''
-      GKE_CLUSTER_NAME='khatabook-cluster'
+      GKE_CLUSTER_NAME='katabook-cluster'
       GKE_REGION = "us-central1"
    }
    stages{
