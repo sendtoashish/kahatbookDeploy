@@ -49,23 +49,21 @@ pipeline{
      stage("Wait for GKE cluster to get provisioned"){
        steps{
           script {
-                      def clusterReady = false
-                      def timeout = 15 * 60 // Timeout in seconds
-                      def startTime = currentBuild.startTimeInMillis
-
-                      timeout(time: timeout, unit: 'SECONDS') {
-                          while (!clusterReady) {
-                              def clusterStatus = sh(script: 'kubectl get nodes --no-headers', returnStatus: true).trim()
-
-                              if (clusterStatus == 0) {
-                                  echo 'GKE Cluster is ready!'
-                                  clusterReady = true
-                              } else {
-                                  echo 'Waiting for GKE Cluster...'
-                                  sleep time: 30, unit: 'SECONDS'
-                              }
-                          }
-                      }
+            def clusterReady = false
+            def timeout = 15 * 60 // Timeout in seconds
+            def startTime = currentBuild.startTimeInMillis
+            timeout(time: timeout, unit: 'SECONDS') {
+                while (!clusterReady) {
+                  def clusterStatus = sh(script: 'kubectl get nodes --no-headers', returnStatus: true).trim()
+                  if (clusterStatus == 0) {
+                         echo 'GKE Cluster is ready!'
+                         clusterReady = true
+                  } else {
+                         echo 'Waiting for GKE Cluster...'
+                         sleep time: 30, unit: 'SECONDS'
+                  }
+                }
+           }
           }
        }
      }
