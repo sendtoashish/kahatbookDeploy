@@ -56,7 +56,7 @@ pipeline{
                        def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace}", returnStatus: true) == 0
                        if(!namespaceExists){
                            sh "kubectl create namespace argocd"
-                           sh "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/${argocdVersion}/manifests/install.yaml"
+                           sh "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml"
                            // Wait for Argo CD components to be ready
                            sh "kubectl wait --for=condition=available deployment -n argocd --timeout=300s --all"
                            // Extract Argo CD password (you may need to adjust the command based on Argo CD version)
