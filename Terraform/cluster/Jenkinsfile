@@ -28,7 +28,7 @@ pipeline{
      stage("Terraform Plan"){
        steps{
           script{
-          cd ${TERRAFORM_PATH}
+          sh 'cd ${TERRAFORM_PATH}'
           def exitCode=sh(script:"terraform plan -var-file=test.tfvars -out=tfplan" ,returnStatus:true)
           if(exitCode ==0){
              echo 'No changes detected. Skipping Terraform apply.'
