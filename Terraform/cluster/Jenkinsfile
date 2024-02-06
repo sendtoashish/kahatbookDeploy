@@ -2,14 +2,14 @@ pipeline{
    agent any
    environment{
       TERRAFORM_PATH = "/var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster"
-      PROJECT_NAME=''
+      GKE_PROJECT_NAME=''
       GKE_CLUSTER_NAME=''
       GKE_REGION = "us-central1"
    }
    stages{
-     stage{
+     stage("Assigning Variables"){
        steps{
-         def PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
+         def GKE_PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
          def GKE_CLUSTER_NAME = sh(script: 'gcloud config get-value container/cluster', returnStdout: true).trim()
        }
      }
@@ -68,10 +68,10 @@ pipeline{
 
      stage("Installing ArgoCd to Gke cluster"){
               steps {
-                       script {
+                     script {
                        def argocdVersion = "latest"
                        def argocdNamespace = "argocd"
-                           sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_ID} "
+                           sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME} "
                        def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace} --ignore-not-found", returnStatus: true) == 0
                        if(!namespaceExists){
                            sh "kubectl create namespace argocd"
@@ -81,10 +81,10 @@ pipeline{
                            // Extract Argo CD password (you may need to adjust the command based on Argo CD version)
                            sh "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d > argocd-password.txt"
                            echo "Argo CD installed successfully. Admin password saved to argocd-password.txt"
-                           }else{
+                       }else{
                            echo"ArgoCd is already Installed"
-                           }
                        }
+                     }
               }
      }
    }
