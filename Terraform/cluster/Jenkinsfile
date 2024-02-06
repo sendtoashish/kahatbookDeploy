@@ -68,7 +68,7 @@ pipeline{
        }
      }
    }
-     stage("Installing ArgoCd to Gke cluster")
+     stage("Installing ArgoCd to Gke cluster"){
               steps {
                        script {
                        def argocdVersion = "latest"
