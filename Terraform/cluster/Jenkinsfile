@@ -53,7 +53,7 @@ pipeline{
                      script {
                        def argocdVersion = "latest"
                        def argocdNamespace = "argocd"
-                       def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace} --ignore-not-found", returnStatus: true) == 0
+                       def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace}", returnStatus: true) == 0
                        if(!namespaceExists){
                            sh "kubectl create namespace argocd"
                            sh "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/${argocdVersion}/manifests/install.yaml"
