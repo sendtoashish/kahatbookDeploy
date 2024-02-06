@@ -54,7 +54,7 @@ pipeline{
             def timeout = 15 * 60 // Timeout in seconds
             def startTime = currentBuild.startTimeInMillis
             timeout(time: timeout, unit: 'SECONDS') {
-               sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME} "
+              sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME} "
                 while (!clusterReady) {
                   def clusterStatus = sh(script: 'kubectl get nodes --no-headers', returnStatus: true).trim()
                   if (clusterStatus == 0) {
