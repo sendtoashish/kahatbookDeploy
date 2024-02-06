@@ -87,10 +87,7 @@ pipeline{
                            echo"ArgoCd is already Installed"
                            }
                        }
-               }
-
-
-           }
-       }
+              }
+     }
    }
 }
