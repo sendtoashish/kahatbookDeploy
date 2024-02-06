@@ -2,8 +2,19 @@ pipeline{
    agent any
    environment{
       TERRAFORM_PATH = "/var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster"
+      PROJECT_NAME=''
+      GKE_CLUSTER_NAME=''
+      GKE_REGION = "us-central1"
+
+
    }
    stages{
+     stage{
+       steps{
+         def PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
+         def GKE_CLUSTER_NAME = sh(script: 'gcloud config get-value container/cluster', returnStdout: true).trim()
+       }
+     }
 
      stage("Initializing terraform"){
        steps{
@@ -15,12 +26,18 @@ pipeline{
      }
      stage("Terraform Plan"){
        steps{
-          sh '''
+          script{
           cd ${TERRAFORM_PATH}
-          terraform plan -var-file=test.tfvars
-          '''
+          def exitCode=sh(script:"terraform plan -var-file=test.tfvars -out=tfplan" ,returnStatus:true)
+          if(exitCode ==0){
+             echo 'No changes detected. Skipping Terraform apply.'
+             currentBuild.result = 'SUCCESS'
+             return
+             }
+          }
        }
      }
+
      stage("Terraform apply"){
        steps{
          sh '''
@@ -29,5 +46,29 @@ pipeline{
          '''
        }
      }
+     stage("Installing ArgoCd to Gke cluster")
+              steps {
+                       script {
+                       def argocdVersion = "latest"
+                       def argocdNamespace = "argocd"
+                           sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_ID} "
+                       def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace} --ignore-not-found", returnStatus: true) == 0
+                       if(!namespaceExists){
+                           sh "kubectl create namespace argocd"
+                           sh "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/${argocdVersion}/manifests/install.yaml"
+                           // Wait for Argo CD components to be ready
+                           sh "kubectl wait --for=condition=available deployment -n argocd --timeout=300s --all"
+                           // Extract Argo CD password (you may need to adjust the command based on Argo CD version)
+                           sh "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d > argocd-password.txt"
+                           echo "Argo CD installed successfully. Admin password saved to argocd-password.txt"
+                           }else{
+                           echo"ArgoCd is already Installed"
+                           }
+                       }
+               }
+
+
+           }
+       }
    }
 }
