@@ -9,8 +9,11 @@ pipeline{
    stages{
      stage("Assigning Variables"){
        steps{
-          GKE_PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
-          GKE_CLUSTER_NAME = sh(script: 'gcloud config get-value container/cluster', returnStdout: true).trim()
+         script{
+            GKE_PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
+            GKE_CLUSTER_NAME = sh(script: 'gcloud config get-value container/cluster', returnStdout: true).trim()
+         }
+
        }
      }
 
