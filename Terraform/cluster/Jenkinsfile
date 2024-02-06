@@ -12,6 +12,8 @@ pipeline{
          script{
             GKE_PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
             GKE_CLUSTER_NAME = sh(script: 'gcloud config get-value container/cluster', returnStdout: true).trim()
+            sh"echo ${GKE_PROJECT_NAME}"
+            sh"echo ${GKE_CLUSTER_NAME}"
          }
 
        }
@@ -47,35 +49,13 @@ pipeline{
          '''
        }
      }
-     stage("Wait for GKE cluster to get provisioned"){
-       steps{
-          script {
-            def clusterReady = false
-            def timeout = 15 * 60 // Timeout in seconds
-            def startTime = currentBuild.startTimeInMillis
-            timeout(time: timeout, unit: 'SECONDS') {
-                while (!clusterReady) {
-                  sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME}"
-                  def clusterStatus = sh(script: 'kubectl get nodes --no-headers', returnStatus: true).trim()
-                  if (clusterStatus == 0) {
-                         echo 'GKE Cluster is ready!'
-                         clusterReady = true
-                  } else {
-                         echo 'Waiting for GKE Cluster...'
-                         sleep time: 30, unit: 'SECONDS'
-                  }
-                }
-           }
-          }
-       }
-     }
 
      stage("Installing ArgoCd to Gke cluster"){
               steps {
                      script {
                        def argocdVersion = "latest"
                        def argocdNamespace = "argocd"
-                           sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME}"
+                       sh "gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --region ${GKE_REGION} --project ${GKE_PROJECT_NAME}"
                        def namespaceExists = sh(script:"kubectl get namespace ${argocdNamespace} --ignore-not-found", returnStatus: true) == 0
                        if(!namespaceExists){
                            sh "kubectl create namespace argocd"
