@@ -2,8 +2,8 @@ pipeline{
    agent any
    environment{
       TERRAFORM_PATH = "/var/lib/jenkins/workspace/deploymentPipeline/Terraform/cluster"
-      GKE_PROJECT_NAME='khatabook-cluster'
-      GKE_CLUSTER_NAME=''
+      GKE_PROJECT_NAME=''
+      GKE_CLUSTER_NAME='khatabook-cluster'
       GKE_REGION = "us-central1"
    }
    stages{
@@ -12,7 +12,6 @@ pipeline{
          script{
             GKE_PROJECT_NAME = sh(script: 'gcloud config get-value project', returnStdout: true).trim()
             sh"echo ${GKE_PROJECT_NAME}"
-            sh"echo ${GKE_CLUSTER_NAME}"
          }
 
        }
